@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio personal de Pablo Amundarain - Proyecto M1 de Soy Henry">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/reset.css">
+  <link rel="stylesheet" href="./styles/styles.css">
+ 
+  <title>Presentación Personal</title>
+  
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="saludo">Hola, soy <span class="yo">Pablo Amundarain</span></h1>
+      <h3 class="lead">Desarrollador Full Stack en formación</h3>
+    </div>
+  </header>
+
+  <main>
+    <!-- Sección 1: Sobre mí -->
+    <section class="section" id="sobre-mi">
+      <div class="container">
+        <h2>Sobre mí</h2>
+        <p>
+          A mis 49 años voy en busca de una materia pendiente: desarrollarme de forma independiente en lo que siempre me gustó y por distintos motivos nunca pude realizar.
+          Hoy quiero cumplir con ese pendiente y recibirme de programador en SoyHenry.
+        </p>
+      </div>
+    </section>
+
+    <!-- Sección 2: Mis Tecnologías Favoritas -->
+    <section class="section alt" id="tecnologias">
+      <div class="container">
+        <h2>Mis Tecnologías Favoritas</h2>
+        <div class="tech-grid" role="list">
+          <article class="card center" aria-label="HTML5" role="listitem">
+            <div class="logo">
+              <img src="./spec/html5.svg" alt="HTML5" width="80" height="80" loading="lazy">
+            </div>
+            <h3>HTML5</h3>
+          </article>
+
+          <article class="card center" aria-label="CSS3" role="listitem">
+            <div class="logo">
+              <img src="./spec/css3.svg" alt="CSS3" width="80" height="80" loading="lazy">
+            </div>
+            <h3>CSS3</h3>
+          </article>
+
+          <article class="card center" aria-label="JavaScript" role="listitem">
+            <div class="logo">
+              <img src="./spec/js.svg" alt="JavaScript" width="80" height="80" loading="lazy">
+            </div>
+            <h3>JavaScript</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 3: Mis Actividades Favoritas -->
+    <section class="section" id="actividades">
+      <div class="container">
+        <h2>Mis Actividades Favoritas</h2>
+        <form id="formActividad" class="form" novalidate aria-describedby="ayuda-form">
+          <p id="ayuda-form" class="help">Los campos con * son obligatorios.</p>
+
+          <label class="field" for="titulo">Título *</label>
+          <input id="titulo" type="text" placeholder="Ej: Tocar la guitarra" required />
+
+          <label class="field" for="descripcion">Descripción *</label>
+          <textarea id="descripcion" rows="3" placeholder="Breve descripción..." required></textarea>
+
+          <label class="field" for="imagen">URL de imagen (opcional)</label>
+          <input id="imagen" type="url" placeholder="https://..." />
+
+          <div class="form-actions">
+            <button id="agregarActividad" class="btn" type="submit">Agregar actividad</button>
+            <button id="limpiarActividades" class="btn btn-outline" type="button">Limpiar todo</button>
+            <!-- NUEVO: botón de IA (sin tocar estilos, usa tus clases) -->
+            <button id="sugerirIA" class="btn btn-outline" type="button">Sugerir actividad (IA)</button>
+          </div>
+
+          <!-- NUEVO: mensajito para la idea de IA -->
+          <p id="iaMsg" class="help" role="status" aria-live="polite"></p>
+
+          <p id="mensajeError" class="error" role="alert" aria-live="polite"></p>
+        </form>
+
+        <div id="listaActividades" class="cards" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; <span id="anio"></span> Proyecto Módulo 1 WebPT30</p>
+    </div>
+  </footer>
+
+  <script src="./scripts/index.js" defer></script>
+  <!-- NUEVO: script de IA -->
+  <script src="./scripts/ia.js" defer></script>
+</body>
+</html>

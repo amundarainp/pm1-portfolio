@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>CSS3</title>
+  <path fill="#1572B6" d="M19 3l9 100 36 10 36-10 9-100H19z"/>
+  <path fill="#33A9DC" d="M64 110l29-8 8-84H64v92z"/>
+  <path fill="#fff" d="M64 40h32l-1 12H64V40zm0 24h16l-1 12H64V64z"/>
+</svg>
