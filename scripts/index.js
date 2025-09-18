@@ -4,7 +4,7 @@ const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
 // Estado + storage
 const storageKey = 'm1-actividades';
-const state = { actividades: [] };
+const state = { actividades: [], busqueda: '' };
 
 function load(){
   try{ state.actividades = JSON.parse(localStorage.getItem(storageKey)) || []; }
@@ -36,8 +36,16 @@ function makeCard({ titulo, descripcion, imagen }, idx){
 
 function render(){
   const list = $('#listaActividades');
+  const term = (state.busqueda || '').toLowerCase();
+  const items = state.actividades.filter(a =>
+    a.titulo.toLowerCase().includes(term) || a.descripcion.toLowerCase().includes(term)
+  );
+
   list.innerHTML = '';
-  state.actividades.forEach((a, i) => list.appendChild(makeCard(a, i)));
+  items.forEach((a, i) => list.appendChild(makeCard(a, i)));
+
+  const contador = $('#contador');
+  if (contador) contador.textContent = `${items.length} ${items.length === 1 ? 'actividad' : 'actividades'}`;
 }
 
 function setError(msg){
@@ -45,7 +53,7 @@ function setError(msg){
   box.textContent = msg || '';
 }
 
-// Acciones
+// Acciones: agregar / limpiar / eliminar
 function onSubmit(ev){
   ev.preventDefault();
   const titulo = $('#titulo').value.trim();
@@ -81,14 +89,78 @@ function onClickGlobal(e){
   render();
 }
 
+// Búsqueda
+function onSearch(e){
+  state.busqueda = e.target.value || '';
+  render();
+}
+
+// Exportar / Importar JSON
+function exportar(){
+  const data = JSON.stringify(state.actividades, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'actividades.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importar(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const arr = JSON.parse(reader.result);
+      if(!Array.isArray(arr)) throw new Error('Formato inválido');
+      // Validación mínima
+      const sane = arr.filter(x => x && typeof x.titulo === 'string' && typeof x.descripcion === 'string')
+                      .map(x => ({ titulo: x.titulo, descripcion: x.descripcion, imagen: x.imagen || '' }));
+      if(sane.length === 0) return alert('No hay actividades válidas en el archivo.');
+      if(confirm('Esto reemplazará tus actividades actuales. ¿Continuar?')){
+        state.actividades = sane;
+        save(); render();
+      }
+    }catch(e){
+      alert('Archivo inválido. Debe ser JSON exportado desde esta app.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// Back-to-top
+function onScroll(){
+  const btn = $('#backToTop');
+  if(!btn) return;
+  if (window.scrollY > 200) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+
 // Bootstrap
 window.addEventListener('DOMContentLoaded', () => {
   const y = document.getElementById('anio');
   if (y) y.textContent = new Date().getFullYear();
+
   const form = document.getElementById('formActividad');
   if (form) form.addEventListener('submit', onSubmit);
+
   const limpiar = document.getElementById('limpiarActividades');
   if (limpiar) limpiar.addEventListener('click', onClear);
+
   document.addEventListener('click', onClickGlobal);
+
+  const buscar = $('#buscar');
+  if (buscar) buscar.addEventListener('input', onSearch);
+
+  const exportarBtn = $('#exportar');
+  if (exportarBtn) exportarBtn.addEventListener('click', exportar);
+
+  const importInput = $('#importFile');
+  if (importInput) importInput.addEventListener('change', e => importar(e.target.files[0]));
+
+  window.addEventListener('scroll', onScroll);
+
   load();
+  onScroll(); // estado inicial del botón "arriba"
 });
