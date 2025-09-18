@@ -180,3 +180,14 @@ a:hover { filter: brightness(1.1); }
   transform: translateY(10px); transition: all .25s ease;
 }
 .back-to-top.show{ opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+/* Formato igual al de la captura */
+#sobre-mi h2 { margin-bottom: .6rem; }
+#sobre-mi p { margin-top: .6rem; max-width: 68ch; }
+
+/* etiqueta roja en negrita */
+.marca {
+  color: #ff3b3b;      /* rojo */
+  font-weight: 700;
+}
+
